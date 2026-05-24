@@ -543,25 +543,26 @@ async function submitForm() {
   const phone = document.getElementById("lead-phone").value.trim();
   const firstName = name.split(" ")[0];
 
-  const payload = new FormData();
-  payload.append("Nome",           name);
-  payload.append("WhatsApp",       phone);
-  payload.append("1. Formato",     sel['q1'] || "");
-  payload.append("2. Uso de IA",   sel['q2'] || "");
-  payload.append("3. Estágio",     sel['q3'] || "");
-  payload.append("4. Tráfego",     sel['q4'] || "");
-  payload.append("5. Gargalo",     sel['q5'] || "");
-  payload.append("6. Faturamento", sel['qfat'] || "");
-  payload.append("7. Frequência",  sel['q6'] || "");
-  payload.append("8. Plataforma",  sel['q7'] || "");
-  payload.append("9. Projeto",     document.getElementById('lead-desc').value.trim());
-  console.log("Enviando para Formspree...", Object.fromEntries(payload));
+  const payload = {
+    "Nome":            name,
+    "WhatsApp":        phone,
+    "1. Formato":      sel['q1'] || "",
+    "2. Uso de IA":    sel['q2'] || "",
+    "3. Estágio":      sel['q3'] || "",
+    "4. Tráfego":      sel['q4'] || "",
+    "5. Gargalo":      sel['q5'] || "",
+    "6. Faturamento":  sel['qfat'] || "",
+    "7. Frequência":   sel['q6'] || "",
+    "8. Plataforma":   sel['q7'] || "",
+    "9. Projeto":      document.getElementById('lead-desc').value.trim(),
+  };
+  console.log("Enviando para Formspree:", JSON.stringify(payload));
   try {
-    const res = await fetch("https://formspree.io/f/mgoqlkgw", {
+    await fetch("https://formspree.io/f/mgoqlkgw", {
       method: "POST",
-      body: payload
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
-    console.log("Resposta Formspree:", res.status, res.ok);
   } catch(e) {
     console.error("Erro ao enviar:", e);
   }
