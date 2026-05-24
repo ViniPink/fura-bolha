@@ -450,7 +450,7 @@
 
 </div>
 <script>
-  const sel = {};
+  var sel = {};
 
   function pick(btn, q) {
     btn.closest('.options').querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
@@ -543,23 +543,29 @@ async function submitForm() {
   const phone = document.getElementById("lead-phone").value.trim();
   const firstName = name.split(" ")[0];
 
-  await fetch("https://formspree.io/f/mgoqlkgw", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      "Nome":            name,
-      "WhatsApp":        phone,
-      "1. Formato":      sel['q1'] || "",
-      "2. Uso de IA":    sel['q2'] || "",
-      "3. Estágio":      sel['q3'] || "",
-      "4. Tráfego":      sel['q4'] || "",
-      "5. Gargalo":      sel['q5'] || "",
-      "6. Faturamento":  sel['qfat'] || "",
-      "7. Frequência":   sel['q6'] || "",
-      "8. Plataforma":   sel['q7'] || "",
-      "9. Projeto":      document.getElementById('lead-desc').value.trim(),
-    })
-  });
+  const payload = {
+    "Nome":            name,
+    "WhatsApp":        phone,
+    "1. Formato":      sel['q1'] || "",
+    "2. Uso de IA":    sel['q2'] || "",
+    "3. Estágio":      sel['q3'] || "",
+    "4. Tráfego":      sel['q4'] || "",
+    "5. Gargalo":      sel['q5'] || "",
+    "6. Faturamento":  sel['qfat'] || "",
+    "7. Frequência":   sel['q6'] || "",
+    "8. Plataforma":   sel['q7'] || "",
+    "9. Projeto":      document.getElementById('lead-desc').value.trim(),
+  };
+  console.log("Enviando para Formspree:", JSON.stringify(payload));
+  try {
+    await fetch("https://formspree.io/f/mgoqlkgw", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {
+    console.error("Erro ao enviar:", e);
+  }
 
   const redirectUrl = getRedirectUrl();
   const plataforma = redirectUrl ? (redirectUrl.includes("tiktok") ? "TikTok" : "Instagram") : null;
