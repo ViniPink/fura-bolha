@@ -565,26 +565,24 @@ async function submitForm() {
   const phone = document.getElementById("lead-phone").value.trim();
   const firstName = name.split(" ")[0];
 
-  // Envia para Formspree
   await fetch("https://formspree.io/f/mgoqlkgw", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      "Nome":           name,
-      "WhatsApp":       phone,
-      "1. Formato":     sel['q1'] || "",
-      "2. Uso de IA":   sel['q2'] || "",
-      "3. Estágio":     sel['q3'] || "",
-      "4. Tráfego":     sel['q4'] || "",
-      "5. Gargalo":     sel['q5'] || "",
-      "6. Faturamento": sel['q6'] || "",
-      "7. Frequência":  sel['q7'] || "",
-      "8. Plataforma":  sel['q8'] || "",
-      "9. Projeto":     document.getElementById('lead-desc').value.trim(),
+      "Nome":            name,
+      "WhatsApp":        phone,
+      "1. Formato":      sel['q1'] || "",
+      "2. Uso de IA":    sel['q2'] || "",
+      "3. Estágio":      sel['q3'] || "",
+      "4. Tráfego":      sel['q4'] || "",
+      "5. Gargalo":      sel['q5'] || "",
+      "6. Faturamento":  sel['qfat'] || "",
+      "7. Frequência":   sel['q6'] || "",
+      "8. Plataforma":   sel['q7'] || "",
+      "9. Projeto":      document.getElementById('lead-desc').value.trim(),
     })
   });
 
-  // Lógica original de sucesso
   const redirectUrl = getRedirectUrl();
   const plataforma = redirectUrl ? (redirectUrl.includes("tiktok") ? "TikTok" : "Instagram") : null;
   const extra = plataforma ? " Voltando pro " + plataforma + " em instantes..." : "";
